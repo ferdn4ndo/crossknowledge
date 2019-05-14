@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CrossKnowledge - Code challenge</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet"> 
+  <style type="text/css">
+    /* Variables definition */
+    :root {
+      --article_width: 300px; /* Article (and cover image) width */
+      --article_font-family: 'Roboto'; /* Set Roboto as main font */
+      --article__body_height: 440px;
+    }
+
+    /*
+     * BLOCKS
+     */
+
+    /* Main body block class, just add padding in order to make it easier to see the component */
+    .b-body {
+      padding: 20px;
+    }
+    /* Block that holds the whole component. Here we set just the outer width, font family and font size */
+    .b-article {
+      font-family: var(--article_font-family);
+      font-size: 14px;
+      width: var(--article_width);
+    }
+    /* Block class for the header, where we set its height and padding */
+    .b-header {
+      height: 50px;
+      padding: 10px 10px 0px 10px;
+    }
+    /* Block class for the footer. Here we set the padding */
+    .b-footer {
+      padding: 15px 10px 15px 10px;
+    }
+
+    /*
+     * ELEMENTS
+     */
+
+    /* An element class for the header title, where we set its font weight (to a bolder one) */
+    .b-header__title {
+      font-weight: 500;
+    }
+    /* An element class for the header legend, where we set the font weight to a smaller one*/
+    .b-header__legend {
+      margin-top: 8px;
+      font-weight: 100;
+    }
+    /* An element class that stores the left side of the header */
+    .b-header__left {
+      float: left;
+    }
+    /* An element class that stores the right side of the header */
+    .b-header__right {
+      float: right;
+      margin-top: 10px;
+    }
+    /* An element class to style the icon image (vertical align it to center the text and set its height)*/
+    .b-header__icon {
+      display: inline-block;
+      vertical-align: text-bottom;
+      height: 20px;
+    }
+    /* According to BEM methodology, we created a MODIFIER class to style the cover image (to set its width)*/
+    .b-article__cover {
+      width: var(--article_width);
+    }
+    /* Element class of the button inside the article. I haven't considered it a block (as most of examples does) due to the absolute positioning with pixel coordinates. This makes this class have meaning only being part of the article (can't exist by itself), which makes it an element by definition. */
+    .b-article__button {
+      position: absolute;
+      top: 465px;
+      left: 80px;
+      text-decoration: none;
+      font-size: 16px;
+      z-index: 2;
+      -webkit-border-radius: 20px;
+      -moz-border-radius: 20px;
+      border-radius: 20px; 
+      padding: 8px 50px 8px 50px;
+    }
+    /* Element class of the body of the article. It holds the cover image and the button */
+    .b-article__body {
+      text-align: center;
+      height: var(--article__body_height);
+    }
+    /* Pseudo class of the body of the article. It was the only solution I found to make a gradient over the image element of the HTML. If it was a div with the cover as background-image it'd be easier and responsive (which definitely isn't right now: try changing b-body padding and see what happens). Even though, I tried to make it as much browser-compatible as possible. */
+    .b-article__body::after {
+      content:'';
+      position:absolute;
+      left:29px;
+      top:93px;
+      width:var(--article_width);
+      height: var(--article__body_height);
+      display:inline-block;
+      background: -moz-linear-gradient(top, rgba(255,255,255,0.0) 60%, rgba(0,0,0,0.9) 100%); /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(60%,rgba(255,255,255,0.0)), color-stop(100%,rgba(0,0,0,0.9))); /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(rgba(255,255,255,0.0) 60%,rgba(0,0,0,0.9) 100%); /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(top, rgba(255,255,255,0.0) 60%,rgba(0,0,0,0.9) 100%); /* Opera 11.10+ */
+      background: -ms-linear-gradient(top, rgba(255,255,255,0.0) 60%,rgba(0,0,0,0.9) 100%); /* IE10+ */
+      background: linear-gradient(to bottom, rgba(255,255,255,0.0) 60%,rgba(0,0,0,0.9) 100%); /* W3C */
+    }
+    /* Element class for the footer text. Here we set the text font-weight (to a light one) and also (not required and self decision) justify its content text */
+    .b-footer_text {
+      font-weight: 100;
+      text-align: justify; /* kinda OCD, I know... */
+    }
+
+    /*
+     * MODIFIERS
+     */
+
+    /* A modifier class for background color and border styling on the article */
+    .b-article_bg-gray {
+      border: 1px solid #e7e7e7;
+      background-color: #f7f7f7;
+    }
+    /* A modifier class for background and foreground color and border styling on the article */
+    .b-article__button_white {
+      border: 2px solid rgba(210,210,210,0.95);
+      background-color: rgba(210,210,210,0.8);
+      color: rgba(21,21,21,0.9);
+    }
+    /* Event class for mouse hover over the button. Wasn't requested, but I think it was expected */
+    .b-article__button_white:hover {
+      border: 2px solid rgba(235,235,235,0.95);
+      background-color: rgba(235,235,235,0.8);
+      color: rgba(10,10,10,0.9);
+    }
+  </style>
+</head>
+<body class="b-body">
+  <article class="b-article b-article_bg-gray">
+    <header class="b-header">
+      <div class="b-header__left">
+        <div class="b-header__title">
+          Avengers: Infinity War
+        </div>
+        <div class="b-header__legend">
+          156 minutes
+        </div>
+      </div>
+      <div class="b-header__right">
+        85% <img class="b-header__icon" src="https://www.rottentomatoes.com/assets/pizza-pie/images/icons/global/cf-lg.3c29eff04f2.png" alt="">
+      </div>
+    </header>
+    <div class="b-article__body">
+      <img class="b-article__cover" src="https://resizing.flixster.com/Xjz2VShAGgZ6Z5AaSxUcgw4MRNo=/fit-in/200x296.2962962962963/v1.bTsxMjcwMDQ5MztqOzE4MDU2OzEyMDA7MTY4ODsyNTAw">
+      <a class="b-article__button b-article__button_white" href="https://www.rottentomatoes.com/m/avengers_infinity_war" target="_blank">
+        Check review
+      </a>
+    </div>
+    <footer class="b-footer">
+      <p class="b-footer_text">
+        An unprecedented cinematic journey ten years in the making and spanning the entire Marvel Cinematic Universe, Marvel Studios' "Avengers: Infinity War" brings to the screen the ultimate, deadliest showdown of all time. The Avengers and their Super Hero allies must be willing to sacrifice all in an attempt to defeat the powerful Thanos before his blitz of devastation and ruin puts an end to the universe. 
+      </p>
+    </footer>
+  </article>
+</body>
+</html>

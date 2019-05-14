@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>CrossKnowledge - Code challenge</title>
+</head>
+<body>
+	<script>
+		/**
+		 * This function is used to convert a milliseconds value (from the
+		 * calculation of elapsed time) to a more user-friendly value, on a scale
+		 * that varies from seconds to hours (like 10 seconds ago, 1 minute ago, 2
+		 * hours ago, etc)
+		 *
+		 * @param      {number}  milliseconds  The milliseconds value
+		 * @return     {string}  The readable output string
+		 */
+		let displayMillisDiff = function(milliseconds){
+			//Calculate the difference from milliseconds to seconds, and round it down to nearest integer
+			let diffSeconds = Math.floor(milliseconds/1000);
+			//Calculate the difference from milliseconds to minutes, and round it down to nearest integer
+			let diffMinutes = Math.floor(milliseconds/(1000*60));
+			//Calculate the difference from milliseconds to hours, and round it down to nearest integer
+			let diffHours = Math.floor(milliseconds/(1000*60*60));
+			//Check if it's on hours scale
+			if(diffHours>0) return diffHours.toString() + ' hour' + ((diffHours > 1) ? 's' : '') + ' ago';
+			//If haven't returned yet, check if it's on minutes scale
+			if(diffMinutes>0) return diffMinutes.toString() + ' minute' + ((diffMinutes > 1) ? 's' : '') + ' ago';
+			//If haven't returned yet, it means that it's on seconds scale
+			return diffSeconds.toString() + ' second' + ((diffSeconds > 1) ? 's' : '') + ' ago';
+		}
+
+		/**
+		 * This function aims to iterate through every 'js-date-format' class
+		 * element and update its content to the elapsed time from it's creation
+		 * (that is stored on data-original-value attribute)
+		 */
+		let updateDates = function(){
+			//Retrieve every element that has 'js-date-format' class
+			var elements = document.getElementsByClassName("js-date-format");
+			//Creates a new date with current time
+			let currentDate = new Date();
+			//Convert the current date to timestamp (in milliseconds)
+			let currentTimestamp = currentDate.getTime();
+			//Iterate through each element with 'js-date-format' class
+			for(var i = 0; i < elements.length; i++){
+				//If div has no 'data-original-value' attribute, store the element content into it
+				if(!elements[i].hasAttribute("data-original-value")) elements[i].setAttribute("data-original-value",elements.item(i).innerHTML)
+				//Create a date object from the attribute data
+				let originalDate = new Date(elements.item(i).getAttribute("data-original-value"));
+				//Convert it to a timestamp (UTC milliseconds)
+				let originalTimestamp = originalDate.getTime();
+			  //Calculate the difference in milisseconds
+			  let diffTimestamp = currentTimestamp - originalTimestamp;
+			  //Get the final result and display into div content
+			  elements[i].innerHTML = displayMillisDiff(diffTimestamp);
+			}
+		}
+
+		//If we want continuous update, uncomment next line
+		// var timer = setInterval(updateDates, 1000); // call every 1000 milliseconds
+
+		//Creates a new MutationObserver
+		var mutationObserver = new MutationObserver(function(mutations) {
+			//For each mutation that was caught
+			mutations.forEach(function(mutation) {
+				//Check if the added node has the 'js-date-format' class, and call updateDates function if so
+				if(mutation.addedNodes[0].className == 'js-date-format') updateDates();
+			});
+		});
+
+		// Starts listening for changes in the body element of the page.
+		// See https://developer.mozilla.org/en-US/docs/Web/API/MutationObserverInit for more info
+		mutationObserver.observe(document.querySelector('body'), {
+			attributes: false, //Ignore attributes changes
+			characterData: false, //We're not monitoring text changes
+			childList: true, //That's what we want to monitor: addition of nodes
+			subtree: false, //We only want to monitor first-level children, so we'll set this to false
+			attributeOldValue: false, //We're not monitoring attributes changes, neither their old values
+			characterDataOldValue: false //We're not monitoring text changes, neither their old values
+		});
+
+		// This will create elements for testing every second
+		// Don't change this code if possible
+		(() => {
+			let elementsCount = 100
+			for (i = 0; i < elementsCount; i++) {
+				setTimeout(() => {
+					let el = document.createElement("div")
+					el.className = 'js-date-format'
+					el.innerHTML = (new Date()).toISOString()
+					document.body.appendChild(el)
+				}, i * 1000)
+			}
+		})();
+	</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CrossKnowledge - Code challenge</title>
+</head>
+<body>
+  <script>
+    // This will create elements for testing every second
+    // Don't change this code if possible
+    (() => {
+      let elementsCount = 100
+      for (i = 0; i < elementsCount; i++) {
+        setTimeout(() => {
+          let el = document.createElement("div")
+          el.className = 'js-date-format'
+          el.innerHTML = (new Date()).toISOString()
+          document.body.appendChild(el)
+        }, i * 1000)
+      }
+    })();
+  </script>
+</body>
+</html>
